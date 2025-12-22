@@ -1,8 +1,9 @@
 import React from 'react';
-
+import {Link} from "@inertiajs/react"
+import AppLayout from "@/layouts/app-layout";
 function Home() {
     return (
-        <div>
+        <AppLayout>
 
             <h1>
                 Home
@@ -10,7 +11,11 @@ function Home() {
             <div>
                 Welcome to Home Page
             </div>
-        </div>
+
+            <Link href="/about">
+                About Page
+            </Link>
+        </AppLayout>
     );
 }
 

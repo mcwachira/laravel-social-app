@@ -1,8 +1,9 @@
 import React from 'react';
+import AppLayout from "@/layouts/app-layout";
 
 function About() {
     return (
-        <div>
+        <AppLayout>
 
             <h1>
                 About
@@ -11,7 +12,7 @@ function About() {
             <div>
                 Welcome to about page
             </div>
-        </div>
+        </AppLayout>
     );
 }
 
