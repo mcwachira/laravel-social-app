@@ -7,11 +7,12 @@ interface PostsIndexProps {
 }
 
 export default function PostsIndex({ posts }: PostsIndexProps) {
+    console.log(posts)
     return (
         <AppLayout>
             <div className="space-y-6">
                 <h1 className="text-2xl font-bold text-gray-900">Posts</h1>
-                {posts.length === 0 ? (
+                {posts?.length === 0 ? (
                     <div className="text-center py-8">
                         <p className="text-gray-500">No posts found.</p>
                     </div>
