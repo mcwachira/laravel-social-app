@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
          $users = User::factory(10)->create();
 
          Post::factory(20)->create([
-             'user_id' => $users->random()->id
+             'user_id' =>fn()=> $users->random()->id
          ]);
 
 
