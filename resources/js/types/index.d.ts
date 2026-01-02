@@ -5,7 +5,7 @@ export interface Post{
         created_at:string;
         updated_at:string;
         user_id:sting;
-        user:User;
+        user?:User;
 }
 
 
@@ -15,4 +15,18 @@ export interface User {
     email:string;
     created_at:string;
     updated_at:string;
+    post?:Post[]
+    comments?:Comment[]
+}
+
+
+export interface Comment{
+    id:number;
+    body:string;
+    created_at:string;
+    updated_at:string;
+    post_id:number;
+    user_id:number;
+    post?:Post;
+    user?:User;
 }

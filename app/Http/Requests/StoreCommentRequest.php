@@ -23,6 +23,9 @@ class StoreCommentRequest extends FormRequest
     {
         return [
             //
+            'body' => 'required|string|min:3|max:1000',
+            //checks if the post id exist in the post table
+            'post_id' => 'required|exists:posts,id',
         ];
     }
 }
