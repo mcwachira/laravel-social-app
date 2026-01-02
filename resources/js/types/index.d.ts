@@ -6,6 +6,7 @@ export interface Post{
         updated_at:string;
         user_id:sting;
         user?:User;
+        comments?:Comment[];
 }
 
 

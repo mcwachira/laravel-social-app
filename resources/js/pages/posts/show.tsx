@@ -1,5 +1,8 @@
 import AppLayout from "@/layouts/app-layout";
 import {Post} from "@/types";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import CommentForm from "@/components/comment-form";
+import CommentCard from "@/components/comment-card";
 
 interface PostShowProps {
     post:Post
@@ -8,13 +11,49 @@ interface PostShowProps {
 export default function PostsShow({post}:PostShowProps) {
     return (
 <AppLayout>
-    <h1 className="text-xl font-semibold mb-2">{post.title}</h1>
-    <p className="text-sm text-gray-500 mb-2">
-        By {post.user.name}
-    </p>
-    <p className="text-gray-600">
-        {post.body}
-    </p>
+
+    <div className="space-y-6">
+        <Card className="rounded-none">
+            <CardHeader>
+                <CardTitle className="text-2xl">
+                    {post.title}
+                </CardTitle>
+                <CardDescription>
+                    By {post.user?.name} on {" "} {new Date(post.created_at).toLocaleDateString()}
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+                <p className="text-gray-700 whitespace-pre-wrap">
+                    {post.body}
+                </p>
+            </CardContent>
+
+        </Card>
+
+
+    {/*    Comment Form  */}
+        <CommentForm postId={post.id}/>
+
+    {/*    Comment Section  */}
+
+        <div className="space-y-4">
+            {post.comments && post.comments.length > 0 ? (
+                <div>
+
+                    {post.comments.map((comment) => (
+                        <CommentCard key={comment.id} comment={comment}/>
+                    ))}
+                </div>
+            ): (<div className="text-cneter py-8">
+            <p className="text-gray-500">
+                No Comment Yet
+            </p>
+            </div>)}
+        </div>
+    </div>
+
+
 </AppLayout>
     )
 }
