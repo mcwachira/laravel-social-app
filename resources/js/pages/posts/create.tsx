@@ -7,6 +7,7 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {InputError} from "@/components/input-error";
+import {store} from "@/actions/App/Http/Controllers/PostController";
 
 export default function PostCreate({}) {
     return (
@@ -22,7 +23,7 @@ export default function PostCreate({}) {
 
 
      <CardDescription>
-         <Form action="/posts" method="post" className="space-y-4">
+         <Form action={store()} method="post" className="space-y-4">
              {({errors})=> (
 
                  <>

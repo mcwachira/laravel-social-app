@@ -2,6 +2,9 @@ import AppHeaderLogo from "@/components/app-header-logo";
 import AppHeaderLink from "@/components/app-header-link";
 import {Link} from "@inertiajs/react";
 import {Button} from "@/components/ui/button";
+import {create, index} from "@/actions/App/Http/Controllers/PostController";
+import home from "@/routes/home";
+import about from "@/routes/about";
 
 export default function AppHeader() {
     return (
@@ -15,15 +18,15 @@ export default function AppHeader() {
         <div className="flex space-x-6 items-center">
 
      <Button>
-         <Link href="/posts/create"> Add Posts</Link>
+         <Link href={create()}> Add Posts</Link>
      </Button>
-            <AppHeaderLink href="/">
+            <AppHeaderLink href={home.index().url}>
                 Home
             </AppHeaderLink>
-            <AppHeaderLink href="/about">
+            <AppHeaderLink href={about.index().url}>
                 About
             </AppHeaderLink>
-            <AppHeaderLink href="/posts">
+            <AppHeaderLink href={index().url}>
                 Posts
             </AppHeaderLink>
         </div>
