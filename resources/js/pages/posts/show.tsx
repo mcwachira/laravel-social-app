@@ -7,6 +7,7 @@ import {Deferred, usePoll} from "@inertiajs/react";
 import {useEffect, useRef} from "react";
 import {toast} from "sonner";
 import CommentList from "@/components/comment-list";
+import LikeButton from "@/components/like-button";
 
 interface PostShowProps {
     post:Post
@@ -70,10 +71,12 @@ export default function PostsShow({post, comments}:PostShowProps) {
                 </CardDescription>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="space-y-4">
                 <p className="text-gray-700 whitespace-pre-wrap">
                     {post.body}
                 </p>
+
+                <LikeButton postId={post.id} count={10} liked={true} isLoading={true}/>
             </CardContent>
 
         </Card>

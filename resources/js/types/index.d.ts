@@ -8,6 +8,7 @@ export interface Post{
         user?:User;
         comments?:Comment[];
         liked?:Like[];
+        likes_count?:number;
 }
 
 
