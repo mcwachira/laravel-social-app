@@ -4,6 +4,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import CommentForm from "@/components/comment-form";
 import CommentCard from "@/components/comment-card";
 import {Deferred} from "@inertiajs/react";
+import {useRef} from "react";
 
 interface PostShowProps {
     post:Post
@@ -11,6 +12,15 @@ interface PostShowProps {
 }
 
 export default function PostsShow({post, comments}:PostShowProps) {
+
+    const commentSectionRef = useRef<HTMLDivElement>(null);
+
+    const handleCommentAdded = () => setTimeout(() => {
+        commentSectionRef.current?.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        })
+    }, 100)
     return (
 <AppLayout>
 
@@ -35,9 +45,13 @@ export default function PostsShow({post, comments}:PostShowProps) {
 
 
     {/*    Comment Form  */}
-        <CommentForm postId={post.id}/>
+        <CommentForm postId={post.id} onCommentAdded={() =>handleCommentAdded()}/>
 
     {/*    Comment Section  */}
+
+        <div ref={commentSectionRef}>
+
+
 <Deferred data="comments"
 fallback={
     <div className="text-center py-8">
@@ -64,6 +78,8 @@ fallback={
             </div>)}
         </div>
 </Deferred>
+
+        </div>
     </div>
 
 

@@ -7,10 +7,11 @@ import {Button} from "@/components/ui/button";
 
 export  interface CommentFormProps{
   postId:number
+    onCommentAdded?:()=> void
 }
 
 
-export default function CommentForm({postId}:CommentFormProps){
+export default function CommentForm({postId, onCommentAdded}:CommentFormProps){
     return (
         <Card className='rounded-none'>
             <CardHeader>
@@ -23,8 +24,8 @@ export default function CommentForm({postId}:CommentFormProps){
                 </CardDescription>
             </CardHeader>
 <CardContent>
-    <Form action="/comments" method="post" className="space-y-4">
-        {({ errors }) => (
+    <Form action="/comments" method="post" className="space-y-4" resetOnSuccess onSuccess={() => onCommentAdded?.()}>
+        {({ errors, processing }) => (
             <>
 
                 <Input type='hidden' name="post_id" value={postId}/>
@@ -38,8 +39,8 @@ export default function CommentForm({postId}:CommentFormProps){
                     <InputError message={errors.body}/>
                 </div>
 
-                <Button>
-                    Add Comment
+                <Button type="submit" disabled={processing}>
+                    { processing ? "Adding Comment ... " : "Add Comment"}
                 </Button>
             </>
         )}
