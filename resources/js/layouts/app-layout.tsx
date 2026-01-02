@@ -8,13 +8,13 @@ interface AppLayoutProps {
 
 export default function AppLayout({children}:AppLayoutProps){
     return (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="min-h-screen bg-background">
 
             <AppHeader/>
 <main className="w-4xl mx-auto px-4 py-8">
-    <div className="bg-white rounded-lg shadow-sm p-6">
+
         {children}
-    </div>
+
 </main>
         </div>
     )

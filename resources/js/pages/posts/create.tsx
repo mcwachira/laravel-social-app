@@ -1,46 +1,70 @@
 import AppLayout from "@/layouts/app-layout";
 import {Form} from "@inertiajs/react";
 import {cn} from "@/lib/utils";
+import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {InputError} from "@/components/input-error";
 
 export default function PostCreate({}) {
     return (
 <AppLayout>
 
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">
+  <Card  className="space-y-6">
+<CardHeader>
+    <CardTitle >
         Create Post
-    </h1>
-
-    <Form action="/posts" method="post" className="spoace-y-4">
-        {({errors})=> (
-
-        <>
-            <div className="space-y-1">
-                <label htmlFor="title" className="block mb-1">
-                    Title
-                </label>
-                <input type="text" id='title' name="title" required className={cn("w-full border rounded px-3 py-2", errors.title && border-red-500)}/>
-
-
-                {errors.title && <p className="text-red-500 text-sm mt-1">{error.title}</p>}
-            </div>
+    </CardTitle>
+</CardHeader>
 
 
 
-            <div className="space-y-1">
-                <label htmlFor="title" className="block mb-1">
-                    Body
-                </label>
-                <textarea id='body' name="body" required className={cn("w-full border rounded px-4 py-2", errors.body && border-red-500)}/>
-                {errors.title && <p className="text-red-500 text-sm mt-1">{error.body}</p>}
-            </div>
+     <CardDescription>
+         <Form action="/posts" method="post" className="space-y-4">
+             {({errors})=> (
 
-            <button type="submit" className="bg-blue-600 text-white px-4 py-3 rounded">
-                Create
-            </button>
+                 <>
+                     <div className="space-y-1">
+                         <Label htmlFor="title">
+                             Title
+                         </Label>
+                         <Input type="text" id='title' name="title"
+                                className={cn(
+                                    errors.title &&
+                                    "border-destructive focus-visible:ring-destructive/20"
+                                )}
+                                aria-invalid={!!errors.title}/>
 
-        </>
-        )}
-    </Form>
+
+                         <InputError message={errors.title}/>
+                     </div>
+
+
+
+                     <div className="space-y-1">
+                         <Label htmlFor="title">
+                             Body
+                         </Label>
+                         <Textarea id='body' name="body"
+                                   className={cn(
+                                       errors.title &&
+                                       "border-destructive focus-visible:ring-destructive/20"
+                                   )}
+                                   aria-invalid={!!errors.body}/>
+             <InputError message={errors.body}/>
+                     </div>
+
+                     <Button type="submit" className="w-full sm:w-auto">
+                         Create Post
+                     </Button>
+
+                 </>
+             )}
+         </Form>
+     </CardDescription>
+  </Card>
 </AppLayout>
     )
 }
