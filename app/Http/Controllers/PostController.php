@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,7 +40,10 @@ public function store(Request $request):RedirectResponse{
             'title' => 'required|string|max:255',
             'body' => 'required|string|max:255',
         ]);
-        Post::create($validated);
+        Post::create([
+            ...$validated,
+            'user_id'=> User::inRandomOrder()->first()->id,
+            ]);
 
         return redirect('/posts');
 
