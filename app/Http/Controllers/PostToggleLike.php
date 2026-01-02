@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostToggleLike extends Controller
@@ -29,6 +30,6 @@ $post->likes()->create([
 ]);
         }
 
-        return back()
+        return back();
     }
 }

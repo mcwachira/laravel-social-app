@@ -1,5 +1,5 @@
 import AppLayout from "@/layouts/app-layout";
-import {Post, Comment} from "@/types";
+import {Post, Comment, PostLikesData} from "@/types";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import CommentForm from "@/components/comment-form";
 import CommentCard from "@/components/comment-card";
@@ -12,9 +12,10 @@ import LikeButton from "@/components/like-button";
 interface PostShowProps {
     post:Post
     comments:Comment[]
+    likes:PostLikesData
 }
 
-export default function PostsShow({post, comments}:PostShowProps) {
+export default function PostsShow({post, comments, likes}:PostShowProps) {
 
     const commentSectionRef = useRef<HTMLDivElement>(null);
     const commentCountRef = useRef(comments?.length ?? 0);
@@ -27,7 +28,7 @@ export default function PostsShow({post, comments}:PostShowProps) {
     })
 
     usePoll(3_000, {
-        only:["comments"]
+        only:["comments", "likes"]
     })
 
     useEffect(() => {
@@ -76,7 +77,14 @@ export default function PostsShow({post, comments}:PostShowProps) {
                     {post.body}
                 </p>
 
-                <LikeButton postId={post.id} count={10} liked={true} isLoading={true}/>
+                <Deferred data="likes"
+                          fallback={
+                              <LikeButton postId={post.id} count={likes?.count} liked={likes?.user_has_liked} isLoading={!likes}/>
+
+                          }>
+                <LikeButton postId={post.id} count={likes?.count} liked={likes?.user_has_liked}/>
+
+                </Deferred>
             </CardContent>
 
         </Card>
