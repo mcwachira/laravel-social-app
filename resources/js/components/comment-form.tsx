@@ -24,7 +24,12 @@ export default function CommentForm({postId, onCommentAdded}:CommentFormProps){
                 </CardDescription>
             </CardHeader>
 <CardContent>
-    <Form action="/comments" method="post" className="space-y-4" resetOnSuccess onSuccess={() => onCommentAdded?.()}>
+    <Form action="/comments" method="post" className="space-y-4"
+          resetOnSuccess
+          onSuccess={() => onCommentAdded?.()}
+    options={{
+        only:["comments"]
+    }}>
         {({ errors, processing }) => (
             <>
 
