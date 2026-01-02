@@ -18,6 +18,8 @@ export default function PostsShow({post, comments}:PostShowProps) {
     const commentSectionRef = useRef<HTMLDivElement>(null);
     const commentCountRef = useRef(comments?.length ?? 0);
 
+    const iAmWritingComment = useRef(false)
+
     const scrollToComments = () =>   commentSectionRef.current?.scrollIntoView({
         behavior:"smooth",
         block:"start"
@@ -32,7 +34,7 @@ export default function PostsShow({post, comments}:PostShowProps) {
         const newCommentCount = comments?.length ?? 0;
 
 
-        if(newCommentCount > commentCountRef.current && commentCountRef.current > 0){
+        if(newCommentCount > commentCountRef.current && commentCountRef.current > 0 && !iAmWritingComment.current){
             toast('New comments available', {
                 duration:6_000,
                 action:{
@@ -42,12 +44,14 @@ export default function PostsShow({post, comments}:PostShowProps) {
             })
         }
         //update the previous length to current length
-        commentCountRef.current = newCommentCount
+        commentCountRef.current = newCommentCount;
+        iAmWritingComment.current= false
 
 
 
     }, [comments])
     const handleCommentAdded = () => {
+        iAmWritingComment.current= true;
         toast("Comment has been added", {
             description: "Your comment is already live and visible",
         });

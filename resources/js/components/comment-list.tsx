@@ -1,38 +1,27 @@
 import {Post, Comment} from "@/types";
 
 import CommentCard from "./comment-card";
+import LoadingCard from "@/components/loading-card";
 
 
 interface CommentListProps {
-
-
     comments: Comment[];
-
-
 }
 
 
 export default function CommentList({comments}: CommentListProps) {
 
-
+if(comments  === undefined){
+    return <LoadingCard message="Loading comments ..."/>
+}
     if (!comments || comments.length === 0) {
 
 
         return (
-
-
-            <div className="text-center py-8">
-
-
-                <p className="text-gray-500">No comments yet.</p>
-
-
-            </div>
-
-
+ <div className="text-center py-8">
+ <p className="text-gray-500">No comments yet.</p>
+</div>
         );
-
-
     }
 
 
