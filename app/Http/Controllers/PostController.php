@@ -16,13 +16,14 @@ class PostController extends Controller
     public function index():Response{
 
         return Inertia::render('posts/index', [
-            'posts' => Post::latest()->get()
+            'posts' => Post::with('user')->latest()->get()
         ]);
     }
-    public function show():Response{
+    public function show(string $id):Response{
+
 
         return Inertia::render('posts/show', [
-            'post' => Post::findOrFail($id)
+            'post' => Post::with('user')->findOrFail($id)
         ]);
     }
 

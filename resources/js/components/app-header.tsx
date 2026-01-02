@@ -20,8 +20,8 @@ export default function AppHeader() {
             <AppHeaderLink href="/about">
                 About
             </AppHeaderLink>
-            <AppHeaderLink href="/post">
-                Post
+            <AppHeaderLink href="/posts">
+                Posts
             </AppHeaderLink>
         </div>
 </nav>
