@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostToggleLike;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,6 +15,7 @@ Route::get('/about', function () {
 })->name('about.index');
 
 
+Route::post('/post/{post}/likes/toggle', PostToggleLike::class);
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 
