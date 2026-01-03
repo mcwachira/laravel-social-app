@@ -18,7 +18,13 @@ class PostController extends Controller
     public function index():Response{
 
         return Inertia::render('posts/index', [
-            'posts' => Post::with('user')->withCount('likes')->latest()->get()
+//            'posts' => Post::with('user')->withCount('likes')->latest()->get(),
+            'posts' => Inertia::scroll(
+                fn () => Post::with('user')
+                    ->withCount('likes')->latest()
+                    ->cursorPaginate()
+            ),
+
         ]);
     }
     public function show(string $id):Response{
