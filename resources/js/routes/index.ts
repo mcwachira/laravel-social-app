@@ -65,3 +65,47 @@ telescope.head = (args?: { view?: string | number } | [view: string | number ] |
     method: 'head',
 })
 
+/**
+* @see \App\Http\Controllers\Auth\LoginController::login
+* @see app/Http/Controllers/Auth/LoginController.php:16
+* @route '/auth/login'
+*/
+export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(options),
+    method: 'get',
+})
+
+login.definition = {
+    methods: ["get","head"],
+    url: '/auth/login',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Auth\LoginController::login
+* @see app/Http/Controllers/Auth/LoginController.php:16
+* @route '/auth/login'
+*/
+login.url = (options?: RouteQueryOptions) => {
+    return login.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Auth\LoginController::login
+* @see app/Http/Controllers/Auth/LoginController.php:16
+* @route '/auth/login'
+*/
+login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Auth\LoginController::login
+* @see app/Http/Controllers/Auth/LoginController.php:16
+* @route '/auth/login'
+*/
+login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: login.url(options),
+    method: 'head',
+})
+
