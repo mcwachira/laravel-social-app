@@ -34,11 +34,14 @@ class RegisterController extends Controller
         ]);
 
         //create user -> hash password
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
+
+        //authenticate
+        Auth::login($user);
 
         //redirect to the main page
         return redirect('/posts');
