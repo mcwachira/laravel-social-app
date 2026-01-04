@@ -62,6 +62,11 @@ export interface PageProps {
                 edit: boolean
             }
         }
+
+        flash:{
+            success?:string;
+            error:?string;
+        }
     }
     [key:string]:any;
 }

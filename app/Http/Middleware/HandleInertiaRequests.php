@@ -48,7 +48,14 @@ class HandleInertiaRequests extends Middleware
                         'create'=>Auth::check() && $request->user()->can('create', Post::class)
                     ]
                 ]
-            ]
-        ];
+            ],
+
+
+        'flash' => [
+            'success' => $request->session()->get('success'),
+            'error' => $request->session()->get('error'),
+    ],
+
+         ];
     }
 }

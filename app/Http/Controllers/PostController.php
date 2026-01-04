@@ -74,7 +74,7 @@ public function store(Request $request):RedirectResponse
         'user_id' => $request->user()->id
     ]);
 
-    return redirect('/posts');
+    return redirect('/posts')->with('success', 'Post created Successfully');
 
 }
 
@@ -96,14 +96,14 @@ public function store(Request $request):RedirectResponse
 
         $post->update($validated);
 
-        return redirect()->route("posts.show", $post);
+        return redirect()->route("posts.show", $post)->with('success', 'Post updated Successfully');
 }
 
 public function destroy(Post $post):RedirectResponse
 {
 Gate::authorize('delete', $post);
 $post -> delete();
-return redirect('/posts');
+return redirect('/posts')->with('success', 'Post deleted Successfully');
 }
 
 }
