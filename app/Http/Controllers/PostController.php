@@ -34,7 +34,8 @@ $post = Post::with('user')->findOrFail($id);
         return Inertia::render('posts/show', [
             'post' =>$post,
         'can' =>[
-            'update' => Auth::check() && Auth::user()->can('update',$post)
+            'update' => Auth::check() && Auth::user()->can('update',$post),
+            'delete' => Auth::check() && Auth::user()->can('delete',$post),
         ],
         'comments' => Inertia::scroll(
             fn() =>$post->comments()

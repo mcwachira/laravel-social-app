@@ -30,6 +30,7 @@ interface PostsShowProps {
     comments_count?: number;
     can: {
         update: boolean,
+        delete: boolean,
     }
 }
 
@@ -121,7 +122,7 @@ export default function PostsShow({
                           </CardDescription>
                       </div>
 
-                        <PostActionsDropDown postId={post.id} canUpdate={can.update} canDelete={false}/>
+                        <PostActionsDropDown postId={post.id} canUpdate={can.update} canDelete={can.delete}/>
 
                         </div>
                     </CardHeader>
