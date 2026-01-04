@@ -30,8 +30,8 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
 
 
-Route::get('/posts/create', [PostController::class, 'create']);
-Route::post('/posts', [PostController::class, 'store']);
+Route::get('/posts/create', [PostController::class, 'create'])->middleware('auth');
+Route::post('/posts', [PostController::class, 'store'])->middleware('auth');
 
 
-Route::post('/comments', [CommentController::class, 'store']);
+Route::post('/comments', [CommentController::class, 'store'])->middleware('auth');
