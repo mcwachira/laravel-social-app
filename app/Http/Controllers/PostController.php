@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,7 +33,9 @@ $post = Post::with('user')->findOrFail($id);
 
         return Inertia::render('posts/show', [
             'post' =>$post,
-        'can_edit' =>Auth::check() && Auth::user()->can('update',$post),
+        'can' =>[
+            'update' => Auth::check() && Auth::user()->can('update',$post)
+        ],
         'comments' => Inertia::scroll(
             fn() =>$post->comments()
                 ->with('user')
@@ -53,11 +56,13 @@ $post = Post::with('user')->findOrFail($id);
 
     public function create():Response{
 
+
+        Gate::authorize('create', Post::class);
         return Inertia::render('posts/create');
     }
 
 public function store(Request $request):RedirectResponse{
-
+    Gate::authorize('create', Post::class);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string|max:255',

@@ -11,7 +11,7 @@ import UserDropDown from "@/components/user-dropdown";
 
 export default function AppHeader() {
 
-    const {user} = usePage<PageProps>().props;
+    const {auth} = usePage<PageProps>().props;
     return (
         <header>
 <div className="max-w-4xl mx-auto px-4 py-4">
@@ -22,9 +22,9 @@ export default function AppHeader() {
 
         <div className="flex space-x-6 items-center">
 
-     <Button>
-         <Link href={create()}> Add Posts</Link>
-     </Button>
+            {auth.can.post.create && (<Button>
+                <Link href={create()}> Add Posts</Link>
+            </Button>)}
             <AppHeaderLink href={home.index().url}>
                 Home
             </AppHeaderLink>
@@ -35,7 +35,7 @@ export default function AppHeader() {
                 Posts
             </AppHeaderLink>
 
-            {user?(<UserDropDown/>):(
+            {auth.user?(<UserDropDown/>):(
                 <Button asChild>
                     <Link href={loginPage().url}>
                         Sign in

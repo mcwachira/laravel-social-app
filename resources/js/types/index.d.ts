@@ -52,6 +52,16 @@ export interface PostLikesData {
 
 
 export interface PageProps {
-    user:User |null;
+    auth: {
+        user: User | null;
+
+
+        can: {
+            post: {
+                create: boolean
+                edit: boolean
+            }
+        }
+    }
     [key:string]:any;
 }
