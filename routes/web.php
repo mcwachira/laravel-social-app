@@ -25,9 +25,9 @@ Route::delete('/auth/logout', [LoginController::class, 'destroy']);
 
 
 
-Route::post('/post/{post}/likes/toggle', PostToggleLike::class)->middleware('auth');
+Route::post('/posts/{post}/likes/toggle', PostToggleLike::class)->middleware('auth');
 Route::get('/posts', [PostController::class, 'index']);
-Route::get('/post/{id}', [PostController::class, 'show']);
+Route::get('/posts/{id}', [PostController::class, 'show']);
 
 
 Route::get('/posts/create', [PostController::class, 'create']);

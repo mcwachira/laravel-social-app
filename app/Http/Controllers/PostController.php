@@ -32,12 +32,13 @@ $post = Post::with('user')->findOrFail($id);
 
         return Inertia::render('posts/show', [
             'post' =>$post,
-        'comments' => Inertia::defer(
+        'comments' => Inertia::scroll(
             fn() =>$post->comments()
                 ->with('user')
                 -> latest()
-                -> get()
+                -> cursorPaginate(3)
         ),
+            'comment_count'=> Inertia::defer(fn() => $post -> comments()->count()),
             'likes' => Inertia::defer(
                 fn() => [
                     'count'=> $post -> likes()->count(),

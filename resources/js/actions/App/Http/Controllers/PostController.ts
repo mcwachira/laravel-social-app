@@ -46,7 +46,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\PostController::show
 * @see app/Http/Controllers/PostController.php:30
-* @route '/post/{id}'
+* @route '/posts/{id}'
 */
 export const show = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
@@ -55,13 +55,13 @@ export const show = (args: { id: string | number } | [id: string | number ] | st
 
 show.definition = {
     methods: ["get","head"],
-    url: '/post/{id}',
+    url: '/posts/{id}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PostController::show
 * @see app/Http/Controllers/PostController.php:30
-* @route '/post/{id}'
+* @route '/posts/{id}'
 */
 show.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -88,7 +88,7 @@ show.url = (args: { id: string | number } | [id: string | number ] | string | nu
 /**
 * @see \App\Http\Controllers\PostController::show
 * @see app/Http/Controllers/PostController.php:30
-* @route '/post/{id}'
+* @route '/posts/{id}'
 */
 show.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
@@ -98,7 +98,7 @@ show.get = (args: { id: string | number } | [id: string | number ] | string | nu
 /**
 * @see \App\Http\Controllers\PostController::show
 * @see app/Http/Controllers/PostController.php:30
-* @route '/post/{id}'
+* @route '/posts/{id}'
 */
 show.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
@@ -107,7 +107,7 @@ show.head = (args: { id: string | number } | [id: string | number ] | string | n
 
 /**
 * @see \App\Http\Controllers\PostController::create
-* @see app/Http/Controllers/PostController.php:52
+* @see app/Http/Controllers/PostController.php:53
 * @route '/posts/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -122,7 +122,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::create
-* @see app/Http/Controllers/PostController.php:52
+* @see app/Http/Controllers/PostController.php:53
 * @route '/posts/create'
 */
 create.url = (options?: RouteQueryOptions) => {
@@ -131,7 +131,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PostController::create
-* @see app/Http/Controllers/PostController.php:52
+* @see app/Http/Controllers/PostController.php:53
 * @route '/posts/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PostController::create
-* @see app/Http/Controllers/PostController.php:52
+* @see app/Http/Controllers/PostController.php:53
 * @route '/posts/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -151,7 +151,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PostController::store
-* @see app/Http/Controllers/PostController.php:57
+* @see app/Http/Controllers/PostController.php:58
 * @route '/posts'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -166,7 +166,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::store
-* @see app/Http/Controllers/PostController.php:57
+* @see app/Http/Controllers/PostController.php:58
 * @route '/posts'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -175,7 +175,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PostController::store
-* @see app/Http/Controllers/PostController.php:57
+* @see app/Http/Controllers/PostController.php:58
 * @route '/posts'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

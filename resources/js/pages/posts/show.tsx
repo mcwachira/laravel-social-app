@@ -1,117 +1,149 @@
 import AppLayout from "@/layouts/app-layout";
-import {Post, Comment, PostLikesData} from "@/types";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import { Comment, Post, PostLikesData } from "@/types";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import CommentForm from "@/components/comment-form";
-import CommentCard from "@/components/comment-card";
-import {Deferred, usePoll} from "@inertiajs/react";
-import {useEffect, useRef} from "react";
-import {toast} from "sonner";
+import {
+    Deferred,
+    InfiniteScroll,
+    router,
+    usePage,
+    usePoll,
+} from "@inertiajs/react";
+import { useEffect, useRef } from "react";
+import { toast } from "sonner";
 import CommentList from "@/components/comment-list";
 import LikeButton from "@/components/like-button";
 
-interface PostShowProps {
-    post:Post
-    comments:Comment[]
-    likes:PostLikesData
+interface PostsShowProps {
+    post: Post;
+    comments: {
+        data: Comment[];
+    };
+    likes: PostLikesData;
+    comments_count?: number;
 }
 
-export default function PostsShow({post, comments, likes}:PostShowProps) {
+export default function PostsShow({
+                                      post,
+                                      comments,
+                                      likes,
+                                      comments_count,
+                                  }: PostsShowProps) {
+    const commentsSectionRef = useRef<HTMLDivElement>(null);
+    // useState - displayed on the page
+    // useRef   - internal logic
+    const commentCountRef = useRef(comments_count ?? 0);
+    const iAmWritingComment = useRef(false);
+    const { url } = usePage();
 
-    const commentSectionRef = useRef<HTMLDivElement>(null);
-    const commentCountRef = useRef(comments?.length ?? 0);
-
-    const iAmWritingComment = useRef(false)
-
-    const scrollToComments = () =>   commentSectionRef.current?.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-    })
+    const scrollToComments = () =>
+        commentsSectionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
 
     usePoll(3_000, {
-        only:["comments", "likes"]
-    })
+        only: ["comments_count", "likes"],
+    });
 
+    // undefined => 0 => 0 => 1 => 1 => 1 => 3
     useEffect(() => {
-        //current length of comments []
-        const newCommentCount = comments?.length ?? 0;
-
-
-        if(newCommentCount > commentCountRef.current && commentCountRef.current > 0 && !iAmWritingComment.current){
-            toast('New comments available', {
-                duration:6_000,
-                action:{
-                    label:"view Comment",
-                    onClick:scrollToComments
-                }
-            })
+        // Current length of comments []
+        const newCommentCount = comments_count ?? 0;
+        // We have stored the previous length
+        // We compare them and show toast if different
+        if (
+            newCommentCount > commentCountRef.current &&
+            commentCountRef.current > 0 &&
+            !iAmWritingComment.current
+        ) {
+            toast("New comments available", {
+                duration: 6_000,
+                action: {
+                    label: "View Comments",
+                    onClick: () => {
+                        router.visit(url, {
+                            only: ["comments"],
+                            reset: ["comments"],
+                            preserveScroll: false,
+                            onSuccess: () => scrollToComments(),
+                        });
+                    },
+                },
+            });
         }
-        //update the previous length to current length
+        // And we update the previous length = current length
         commentCountRef.current = newCommentCount;
-        iAmWritingComment.current= false
+        iAmWritingComment.current = false;
+    }, [comments_count]);
 
-
-
-    }, [comments])
     const handleCommentAdded = () => {
-        iAmWritingComment.current= true;
+        iAmWritingComment.current = true;
         toast("Comment has been added", {
             description: "Your comment is already live and visible",
         });
+        router.visit(url, {
+            only: ["comments"],
+            reset: ["comments"],
+            preserveState: true,
+        });
     };
+
     return (
-<AppLayout>
+        <AppLayout>
+            <div className="space-y-6">
+                {/* Post Content */}
+                <Card className="rounded-none">
+                    <CardHeader>
+                        <CardTitle className="text-2xl">{post.title}</CardTitle>
+                        <CardDescription>
+                            By {post.user?.name} on{" "}
+                            {new Date(post.created_at).toLocaleDateString()}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <p className="text-gray-700 whitespace-pre-wrap">
+                            {post.body}
+                        </p>
+                        <Deferred
+                            data="likes"
+                            fallback={
+                                <LikeButton
+                                    postId={post.id}
+                                    count={likes?.count}
+                                    liked={likes?.user_has_liked}
+                                    isLoading={!likes}
+                                />
+                            }
+                        >
+                            <LikeButton
+                                postId={post.id}
+                                count={likes?.count}
+                                liked={likes?.user_has_liked}
+                            />
+                        </Deferred>
+                    </CardContent>
+                </Card>
 
-    <div className="space-y-6">
-        <Card className="rounded-none">
-            <CardHeader>
-                <CardTitle className="text-2xl">
-                    {post.title}
-                </CardTitle>
-                <CardDescription>
-                    By {post.user?.name} on {" "} {new Date(post.created_at).toLocaleDateString()}
-                </CardDescription>
-            </CardHeader>
+                {/* Comment Form */}
+                <CommentForm
+                    postId={post.id}
+                    onCommentAdded={handleCommentAdded}
+                />
 
-            <CardContent className="space-y-4">
-                <p className="text-gray-700 whitespace-pre-wrap">
-                    {post.body}
-                </p>
-
-                <Deferred data="likes"
-                          fallback={
-                              <LikeButton postId={post.id} count={likes?.count} liked={likes?.user_has_liked} isLoading={!likes}/>
-
-                          }>
-                <LikeButton postId={post.id} count={likes?.count} liked={likes?.user_has_liked}/>
-
-                </Deferred>
-            </CardContent>
-
-        </Card>
-
-
-    {/*    Comment Form  */}
-        <CommentForm postId={post.id} onCommentAdded={() =>handleCommentAdded()}/>
-
-    {/*    Comment Section  */}
-
-        <div ref={commentSectionRef}>
-
-
-<Deferred data="comments"
-fallback={
-    <CommentList  comments={comments ?? []}/>
-
-}>
-
-
-        <CommentList comments={comments}/>
-</Deferred>
-
-        </div>
-    </div>
-
-
-</AppLayout>
-    )
+                {/* Comments Section */}
+                <div ref={commentsSectionRef}>
+                    <InfiniteScroll data="comments">
+                        <CommentList comments={comments.data} />
+                    </InfiniteScroll>
+                </div>
+            </div>
+        </AppLayout>
+    );
 }
