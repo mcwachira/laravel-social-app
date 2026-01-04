@@ -8,6 +8,7 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {InputError} from "@/components/input-error";
 import {update} from "@/actions/App/Http/Controllers/PostController";
+import {Post} from "@/types";
 
 
 interface PostsEditProps {

@@ -44,6 +44,50 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\PostController::index
+* @see app/Http/Controllers/PostController.php:19
+* @route '/posts'
+*/
+export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+index.definition = {
+    methods: ["get","head"],
+    url: '/posts',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\PostController::index
+* @see app/Http/Controllers/PostController.php:19
+* @route '/posts'
+*/
+index.url = (options?: RouteQueryOptions) => {
+    return index.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\PostController::index
+* @see app/Http/Controllers/PostController.php:19
+* @route '/posts'
+*/
+index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PostController::index
+* @see app/Http/Controllers/PostController.php:19
+* @route '/posts'
+*/
+index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: index.url(options),
+    method: 'head',
+})
+
+/**
 * @see \App\Http\Controllers\PostController::show
 * @see app/Http/Controllers/PostController.php:31
 * @route '/posts/{id}'
@@ -106,50 +150,6 @@ show.head = (args: { id: string | number } | [id: string | number ] | string | n
 })
 
 /**
-* @see \App\Http\Controllers\PostController::index
-* @see app/Http/Controllers/PostController.php:19
-* @route '/posts'
-*/
-export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index.url(options),
-    method: 'get',
-})
-
-index.definition = {
-    methods: ["get","head"],
-    url: '/posts',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\PostController::index
-* @see app/Http/Controllers/PostController.php:19
-* @route '/posts'
-*/
-index.url = (options?: RouteQueryOptions) => {
-    return index.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\PostController::index
-* @see app/Http/Controllers/PostController.php:19
-* @route '/posts'
-*/
-index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PostController::index
-* @see app/Http/Controllers/PostController.php:19
-* @route '/posts'
-*/
-index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: index.url(options),
-    method: 'head',
-})
-
-/**
 * @see \App\Http\Controllers\PostController::store
 * @see app/Http/Controllers/PostController.php:64
 * @route '/posts'
@@ -186,44 +186,68 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\PostController::edit
 * @see app/Http/Controllers/PostController.php:81
-* @route '/posts/{post/edit'
+* @route '/posts/{post}/edit'
 */
-export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: edit.url(options),
+export const edit = (args: { post: number | { id: number } } | [post: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 
 edit.definition = {
     methods: ["get","head"],
-    url: '/posts/{post/edit',
+    url: '/posts/{post}/edit',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PostController::edit
 * @see app/Http/Controllers/PostController.php:81
-* @route '/posts/{post/edit'
+* @route '/posts/{post}/edit'
 */
-edit.url = (options?: RouteQueryOptions) => {
-    return edit.definition.url + queryParams(options)
+edit.url = (args: { post: number | { id: number } } | [post: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { post: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { post: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            post: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        post: typeof args.post === 'object'
+        ? args.post.id
+        : args.post,
+    }
+
+    return edit.definition.url
+            .replace('{post}', parsedArgs.post.toString())
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\PostController::edit
 * @see app/Http/Controllers/PostController.php:81
-* @route '/posts/{post/edit'
+* @route '/posts/{post}/edit'
 */
-edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: edit.url(options),
+edit.get = (args: { post: number | { id: number } } | [post: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 
 /**
 * @see \App\Http\Controllers\PostController::edit
 * @see app/Http/Controllers/PostController.php:81
-* @route '/posts/{post/edit'
+* @route '/posts/{post}/edit'
 */
-edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: edit.url(options),
+edit.head = (args: { post: number | { id: number } } | [post: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: edit.url(args, options),
     method: 'head',
 })
 
@@ -343,6 +367,6 @@ destroy.delete = (args: { post: number | { id: number } } | [post: number | { id
     method: 'delete',
 })
 
-const PostController = { create, show, index, store, edit, update, destroy }
+const PostController = { create, index, show, store, edit, update, destroy }
 
 export default PostController
