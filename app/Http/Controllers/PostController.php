@@ -61,23 +61,41 @@ $post = Post::with('user')->findOrFail($id);
         return Inertia::render('posts/create');
     }
 
-public function store(Request $request):RedirectResponse{
+public function store(Request $request):RedirectResponse
+{
     Gate::authorize('create', Post::class);
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'body' => 'required|string|max:255',
+    ]);
+    Post::create([
+        ...$validated,
+        'user_id' => $request->user()->id
+    ]);
+
+    return redirect('/posts');
+
+}
+
+
+    public function edit(Post $post):Response
+    {
+
+
+        Gate::authorize('update', $post);
+        return Inertia::render('posts/edit', ['post' => $post]);
+    }
+
+    public function update(Request $request, Post $post):RedirectResponse{
+        Gate::authorize('create', $post);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string|max:255',
         ]);
-        Post::create([
-            ...$validated,
-            'user_id' => $request->user()->id
-            ]);
 
-        return redirect('/posts');
+        $post->update($validated);
 
-//Validate
-
-    //create the post in db
-    //redirect to /pots\
+        return redirect()->route("posts.show", $post);
 }
 
 }
