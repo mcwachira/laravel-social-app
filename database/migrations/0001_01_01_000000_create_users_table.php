@@ -14,8 +14,24 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique();
+
+
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+
+            $table->text('bio')->nullable();
+            $table->string('avatar_path')->nullable();
+            $table->string('cover_photo_path')->nullable();
+
+            $table->boolean('is_private')->default(false);
+            $table->boolean('is_verified')->default(false);
+
+
+            $table->unsignedInteger('followers_count')->default(0);
+            $table->unsignedInteger('following_count')->default(0);
+            $table->unsignedInteger('posts_count')->default(0);
+
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

@@ -13,9 +13,23 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('body');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->text('content');
+  $table->enum('visibility', ['public', 'followers', 'private'])->default('public');
+$table->boolean('is_pinned')->default(false);
+
+// Denormalized counts
+
+            $table->unsignedInteger('like_count')->default(0);
+            $table->unsignedInteger('comments_count')->default(0);
+            $table->unsignedInteger('shares_count')->default(0);
+
+
             $table->timestamps();
+
+            // Indexes for performance
+            $table->index(['user_id', 'created_at']); // For user profile queries
+            $table->index('created_at'); // For feed queries
         });
     }
 
