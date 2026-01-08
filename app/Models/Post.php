@@ -24,7 +24,7 @@ class Post extends Model
     protected $casts = [
         'is_pinned' => 'boolean',
         'created_at' => 'datetime',
-        'likes_count' => 'integer',
+        'like_count' => 'integer',
         'comments_count' => 'integer',
     ];
 

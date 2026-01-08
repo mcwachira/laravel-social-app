@@ -21,7 +21,7 @@ class PostInteractionServices
             $post->likes() -> create([
                 'user_id' => $user -> id
             ]);
-            $post -> increment('likes_count');
+            $post -> increment('like_count');
         });
 
 
@@ -37,7 +37,7 @@ class PostInteractionServices
         DB::transaction(function () use ($post, $user){
             $post->likes()->where('user_id', $user -> id)->delete();
 
-            $post->decrement('likes_count');
+            $post->decrement('like_count');
         });
 
 

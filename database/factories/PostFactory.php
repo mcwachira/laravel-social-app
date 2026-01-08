@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +18,12 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-          'title' => fake()->sentence(),
-        'body'=>fake()->paragraph(3),
+            'user_id' => User::factory(),
+          'content' => fake()->paragraph(rand(1,5)),
+            'visibility'=> fake()->randomElement(['public', 'followers', 'private']),
+            'is_pinned'=> fake()->boolean(5),
+            'like_count' => 0,
+            'comments_count' => 0,
             'created_at' => fake()->dateTimeBetween('-1 year', 'now')
         ];
     }
